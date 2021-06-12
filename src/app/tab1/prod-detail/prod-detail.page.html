@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+   <ion-slides class="ion-padding" pager>
+     <ion-slide *ngFor="let i of product?.images">
+       <ion-img [src]="i?.src" alt="{{ product?.name }}"></ion-img>
+     </ion-slide>
+   </ion-slides>
+
+  <ion-item-divider></ion-item-divider>
+  <ion-avatar *ngIf="product.on_sale === true">
+    <img src="../../../assets/sale.svg" alt="sale">
+  </ion-avatar>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <div><h2>{{ product?.name }}:  </h2>
+                <ion-label *ngFor="let i of product?.default_attributes">
+                  {{i?.option}}
+                </ion-label>
+              </div>
+
+              <ion-buttons slot="start"></ion-buttons>
+              <ion-text *ngIf='product.on_sale === true'>
+                <p> <del> <b> {{ product?.regular_price | currency:"$" }} </b> </del> &nbsp; <ins>  <b> {{ product?.price | currency:"$" }} </b> </ins> </p>
+              </ion-text>
+              <ion-text *ngIf='product.on_sale === false'>
+                <p><b> {{ product?.price | currency:"$" }} </b> </p>
+              </ion-text>
+            </ion-card-title>
+            <ion-card-subtitle>
+              <ion-chip *ngFor="let c of product?.categories" color="secondary">
+                {{ c?.name}}
+              </ion-chip>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label>
+              <div [innerHTML] = "product?.description">
+              </div>
+
+              <div>
+
+                <div class="grid">
+                  <ng-container *ngFor="let i of product?.variations; let l = index">
+                    <ion-button color = "tertiary" routerLink="../{{i}}">Variation: {{l + 1}} <ion-icon slot="start" name="dice-outline"></ion-icon> </ion-button>
+                  </ng-container>
+                </div>
+
+              </div>
+
+            </ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar style="padding: 0 10px;">
+    <ion-label>
+      <ion-button color="tertiary" expand="full" fill="solid" (click) = "addToCart(product)">
+        Add To Cart
+      </ion-button>
+    </ion-label>
+  </ion-toolbar>
+</ion-footer>
